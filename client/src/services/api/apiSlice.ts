@@ -1,11 +1,12 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react"
-import { RootState } from "../store";
-import { logout, setToken } from "../slices/auth";
+import { RootState } from "../../redux/store";
+import { logout, setCredentials } from "../../redux/slices/auth";
 
 const baseQuery = fetchBaseQuery({
     baseUrl: "http://localhost:8000/api",
+    credentials: "include",
     prepareHeaders: (headers, {getState}) => {
-        const token = (getState() as RootState).auth.token;
+        const token = (getState() as RootState).reducer.auth.token;
         if(token) {
             headers.set('Authorization', `Bearer ${token}`)
         }
@@ -23,7 +24,7 @@ const baseQueryWithAuth: typeof baseQuery = async (args,api,options) => {
                 accessToken: string
             }
 
-            api.dispatch(setToken(accessToken))
+            api.dispatch(setCredentials({token: accessToken}))
 
             result = await baseQuery(args,api,options)
         } else {

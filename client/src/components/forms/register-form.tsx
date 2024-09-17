@@ -6,7 +6,7 @@ import { RegisterSchema } from "../../schemas";
 import { Button } from "../ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
-import { useRegisterMutation } from "../../redux/api/auth";
+import { useRegisterMutation } from "../../services/auth";
 
 const RegisterForm = () => {
     const navigate = useNavigate()

@@ -9,7 +9,7 @@ import { RootState } from "../../redux/store";
 const RegisterPage = () => {
   const navigate = useNavigate();
   
-  const { token } = useSelector((state: RootState) => state.auth);
+  const { token } = useSelector((state: RootState) => state.reducer.auth);
 
   useEffect(() => {
     if (token) {

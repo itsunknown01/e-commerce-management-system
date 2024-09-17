@@ -1,10 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as z from "zod";
-import { useDispatch } from "react-redux";
 
-import { useLoginMutation } from "../../redux/api/auth";
+import { useLoginMutation } from "../../services/auth";
 import { LoginSchema } from "../../schemas";
 import { Button } from "../ui/button";
 import {
@@ -16,12 +15,17 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { setToken } from "../../redux/slices/auth";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../../redux/slices/auth";
 
 const LoginForm = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/";
+
   const dispatch = useDispatch();
-  const [login, { isLoading, isSuccess }] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -32,12 +36,13 @@ const LoginForm = () => {
 
   const loginSubmit = async (values: z.infer<typeof LoginSchema>) => {
     try {
-      const response = await login(values).unwrap();
-      dispatch(setToken(response.accessToken));
-      isSuccess && navigate("/")
+      const { accessToken: token, userInfo } = await login(values).unwrap();
+      navigate(from, { replace: true });
+      dispatch(setCredentials({ token, userInfo }));
     } catch (error) {
       console.log(error);
     }
+    form.reset();
   };
   return (
     <Form {...form}>
@@ -80,7 +85,11 @@ const LoginForm = () => {
             )}
           />
         </div>
-        <Button disabled={isLoading} type="submit" className="w-full bg-[#4880FF] hover:bg-[#4880FF]">
+        <Button
+          disabled={isLoading}
+          type="submit"
+          className="w-full bg-[#4880FF] hover:bg-[#4880FF]"
+        >
           Login
         </Button>
       </form>

@@ -6,10 +6,10 @@ export interface SlotProps extends React.HTMLAttributes<HTMLElement> {
 
 const Slot = React.forwardRef<HTMLDivElement, SlotProps>(
   ({ children, ...props }, ref) => (
-      <div ref={ref} {...props}>
-        {children}
-      </div>
-    )
+    <div ref={ref} {...props}>
+      {children}
+    </div>
+  )
 );
 
 Slot.displayName = "Slot";
