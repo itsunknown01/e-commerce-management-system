@@ -7,21 +7,90 @@ datasource db {
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
-        
 
 enum UserRole {
-  USER 
+  USER
   ADMIN
 }
 
 model User {
-  id String @id @unique @default(uuid())
-  name String
-  email String
-  image String?
-  password String 
-  token String?
-  role UserRole @default(USER)
+  id       String   @id @unique @default(uuid())
+  name     String
+  email    String   @unique
+  image    String?
+  password String
+  token    String?  @unique
+  role     UserRole @default(USER)
+
+  stores Store[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Store {
+  id         String     @id @unique @default(uuid())
+  name       String
+  userId     String
+  user       User       @relation(fields: [userId], references: [id])
+  Banner     Banner[]
+  Categories Category[]
+  Products   Product[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum BannerType {
+  MAIN
+  SMALL
+}
+
+model Banner {
+  id        String     @id @unique @default(uuid())
+  type      BannerType
+  thumbnail String
+  storeId   String
+  store     Store      @relation(fields: [storeId], references: [id])
+  productId String
+  product   Product    @relation(fields: [productId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id                 String   @id @unique @default(uuid())
+  storeId            String
+  store              Store    @relation(fields: [storeId], references: [id])
+  title              String
+  brand              String
+  categoryId         String
+  categories         Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  description        String
+  discountPercentage Int
+  images             String[]
+  price              Float
+  rating             Int
+  quantity           Int
+  thumbnail          String
+  IsFeatured         Boolean?
+  IsFamous           Boolean?
+  IsSpecial          Boolean?
+  Banner             Banner[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([categoryId])
+}
+
+model Category {
+  id       String    @id @unique @default(uuid())
+  storeId  String
+  store    Store     @relation(fields: [storeId], references: [id])
+  name     String
+  products Product[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -25,9 +25,10 @@ export const handleRefresh = async (req: Request, res: Response) => {
     jwt.verify(
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET as string,
-      (err: any, decoded: any) => {
+      async (err: any, decoded: any) => {
         if (err || existingUser.email !== decoded.email)
           return res.sendStatus(403);
+
         const accessToken = jwt.sign(
           { email: decoded.email },
           process.env.ACCESS_TOKEN_SECRET as string,
@@ -36,7 +37,14 @@ export const handleRefresh = async (req: Request, res: Response) => {
           }
         );
 
-        return res.json({accessToken})
+        const userInfo = {
+          id: existingUser.id,
+          email: existingUser.email,
+          name: existingUser.name,
+          role: existingUser.role,
+        };
+        
+        return res.json({ accessToken, userInfo });
       }
     );
   } catch (error) {

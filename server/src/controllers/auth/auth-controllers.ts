@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
+import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
 
 import { LoginSchema, RegisterSchema } from "../../schemas";
 import { db } from "../../services/db";
@@ -63,7 +63,7 @@ export const login = async (req: Request, res: Response) => {
     });
 
     if (!existingUser || !existingUser.email || !existingUser.password) {
-      return res.status(400).json({ message: "Email does not exists" });
+      return res.status(401).json({ message: "Email does not exists" });
     }
 
     const isMatch = await bcrypt.compare(password, existingUser.password);
@@ -81,7 +81,7 @@ export const login = async (req: Request, res: Response) => {
         { expiresIn: "30d" }
       );
 
-      await db.user.update({
+      const loggedUser = await db.user.update({
         where: {
           id: existingUser.id,
         },
@@ -92,15 +92,23 @@ export const login = async (req: Request, res: Response) => {
 
       res.cookie("refresh", refreshToken, {
         httpOnly: true,
-        secure: false,
+        secure: true,
         sameSite: "none",
         maxAge: 30 *24 * 60 * 60 * 1000
       });
 
+      const userInfo = {
+        id: loggedUser.id,
+        name: loggedUser.name,
+        email: loggedUser.email,
+        image: loggedUser.image,
+        role: loggedUser.role
+      }
+
       return res.status(200).json({
         message: "Login Successful",
         accessToken,
-        loggedIn: true,
+        userInfo
       });
     }
   } catch (error) {
