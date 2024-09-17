@@ -7,18 +7,18 @@ import Heading from "../../components/ui/heading";
 import { Page, PageHeader } from "../../components/ui/page";
 import { Separator } from "../../components/ui/separator";
 import { useFetchCategoriesQuery } from "../../services/category";
-import { columns } from "./columns";
+import { CategoryColumn, columns } from "./columns";
 
 export default function CategoryPage() {
   const params = useParams();
 
   const { data: categories = [], isLoading } = useFetchCategoriesQuery(
-    params.storeId
+    params.storeId as string
   );
 
   let formattedData;
   if (!isLoading) {
-    formattedData = categories?.map((category) => ({
+    formattedData = categories.map((category) => ({
       id: category.id,
       name: category.name,
       createdAt: format(category.createdAt, "MMMM dd, yyyy"),
@@ -37,7 +37,11 @@ export default function CategoryPage() {
       {isLoading ? (
         <div>Loading...</div>
       ) : (
-        <DataTable data={formattedData} columns={columns} searchkey="name" />
+        <DataTable
+          data={formattedData as CategoryColumn[]}
+          columns={columns}
+          searchkey="name"
+        />
       )}
       <Heading
         className="items-start gap-y-2"
