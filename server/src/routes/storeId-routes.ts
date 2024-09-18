@@ -27,4 +27,10 @@ router.post("/create-product", createProducts);
 router.put("/update-product", updateProducts);
 router.delete("/delete-product", deleteProducts);
 
+// banner routes
+router.get("/banners", fetchAllBanners);
+router.post("/create-banner", createBanners);
+router.put("/update-banner", updateBanners);
+router.delete("/delete-banner", deleteBanners);
+
 export default router;
