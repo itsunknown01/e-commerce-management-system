@@ -23,6 +23,7 @@ export const RegisterSchema = z.object({
 
 export const categorySchema = z.object({
   name: z.string().min(1),
+  imageUrl: z.string().min(1)
 });
 
 export const productSchema = z.object({

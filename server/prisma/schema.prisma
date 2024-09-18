@@ -90,6 +90,7 @@ model Category {
   storeId  String
   store    Store     @relation(fields: [storeId], references: [id])
   name     String
+  image    String?
   products Product[]
 
   createdAt DateTime @default(now())

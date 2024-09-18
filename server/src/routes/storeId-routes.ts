@@ -5,7 +5,7 @@ import {
   getAllCategories,
   updateSingleCategory,
 } from "../controllers/storeId/category-controller";
-import { createProducts } from "../controllers/storeId/product-controller";
+import { createProducts, fetchAllProducts } from "../controllers/storeId/product-controller";
 
 const router = Router({ mergeParams: true });
 
@@ -16,6 +16,7 @@ router.put("/update-category/:categoryId", updateSingleCategory);
 router.delete("/delete-category/:categoryId", deleteSingleCategory);
 
 // product routes
+router.get("/products", fetchAllProducts)
 router.post("/create-product", createProducts);
 
 export default router;

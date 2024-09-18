@@ -10,7 +10,7 @@ export const createSingleCategory = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid Fields" });
     }
 
-    const { name } = validation.data;
+    const { name,imageUrl } = validation.data;
 
     const { storeId } = req.params;
     if (!storeId) return res.sendStatus(400);
@@ -38,11 +38,12 @@ export const createSingleCategory = async (req: Request, res: Response) => {
     const newCategory = await db.category.create({
       data: {
         name,
+        image: imageUrl,
         storeId: storeByUserId.id,
       },
     });
 
-    return res.status(200).json({ newCategory });
+    return res.status(201).json({ newCategory });
   } catch (error) {
     console.log("CATEGORY CREATE API ERROR", error);
   }
