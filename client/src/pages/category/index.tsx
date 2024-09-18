@@ -8,6 +8,7 @@ import { Page, PageHeader } from "../../components/ui/page";
 import { Separator } from "../../components/ui/separator";
 import { useFetchCategoriesQuery } from "../../services/category";
 import { CategoryColumn, columns } from "./columns";
+import { ScrollArea } from "../../components/ui/scroll-area";
 
 export default function CategoryPage() {
   const params = useParams();
@@ -16,14 +17,11 @@ export default function CategoryPage() {
     params.storeId as string
   );
 
-  let formattedData;
-  if (!isLoading) {
-    formattedData = categories.map((category) => ({
-      id: category.id,
-      name: category.name,
-      createdAt: format(category.createdAt, "MMMM dd, yyyy"),
-    }));
-  }
+  const formattedData = categories.map((category) => ({
+    id: category.id,
+    name: category.name,
+    createdAt: format(category.createdAt, "MMMM dd, yyyy"),
+  }));
 
   return (
     <Page>
@@ -32,24 +30,22 @@ export default function CategoryPage() {
         description="Manage categories for your store"
         buttonLink={`/${params.storeId}/category/new`}
       />
-
       <Separator className="bg-zinc-300" />
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
+      <ScrollArea className="h-[calc(100vh-200px)]">
         <DataTable
           data={formattedData as CategoryColumn[]}
           columns={columns}
           searchkey="name"
+          loading={isLoading}
         />
-      )}
-      <Heading
-        className="items-start gap-y-2"
-        title="APIs"
-        description="API calls for Banners"
-      />
-      <Separator className="my-6" />
-      <ApiList entityName="categories" entityIdName="categoryId" />
+        <Heading
+          className="items-start gap-y-2"
+          title="APIs"
+          description="API calls for Banners"
+        />
+        <Separator className="my-6" />
+        <ApiList entityName="category" entityIdName="categoryId" />
+      </ScrollArea>
     </Page>
   );
 }

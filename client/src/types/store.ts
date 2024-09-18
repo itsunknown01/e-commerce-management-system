@@ -17,7 +17,7 @@ export type ProductType = {
     storeId: string;
     title: string;
     brand: string;
-    categoryId: string;
+    categories: CategoryType;
     description: string;
     discountPercentage: number;
     images: string[];
@@ -28,5 +28,6 @@ export type ProductType = {
     IsFamous: boolean
     IsFeatured: boolean
     IsSpecial: boolean
+    createdAt: Date;
     updatedAt: Date;
 }

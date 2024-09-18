@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Trash } from "lucide-react";
 import toast from "react-hot-toast";
@@ -9,28 +9,37 @@ import Heading from "../../components/ui/heading";
 import { Button } from "../../components/ui/button";
 import { Separator } from "../../components/ui/separator";
 import CategoryForm from "../../components/forms/category-form";
-import { useDeleteCategoryMutation } from "../../services/category";
+import {
+  useDeleteCategoryMutation,
+  useFetchCategoriesQuery,
+} from "../../services/category";
 
 const CategoryIdPage = () => {
   const [open, setOpen] = useState(false);
-  let data;
+  const params = useParams();
+  const navigate = useNavigate();
+
+  const { data: categories } = useFetchCategoriesQuery(
+    params.storeId as string
+  );
+  const data = useMemo(
+    () => categories?.filter((category) => category.id === params.categoryId),
+    [categories]
+  );
 
   const title = data ? "Edit category" : "Create category";
   const description = data ? "Edit a category" : "Add a new category";
   const toastMessage = data ? "Category updated." : "Category created.";
   const action = data ? "Save changes" : "Create";
 
-  const params = useParams();
-  const navigate = useNavigate();
-
   const [deleteCategory, { isLoading }] = useDeleteCategoryMutation();
 
   const handleDelete = async () => {
     try {
       await deleteCategory({
-        categorId: params.categoryId,
-        storeId: params.storeId,
-      });
+        categoryId: params.categoryId as string,
+        storeId: params.storeId as string,
+      }).unwrap();
       navigate(`/${params.storeId}/categories`);
       toast.success(
         "Make sure you removed all the products using this category first."
@@ -53,18 +62,20 @@ const CategoryIdPage = () => {
           title={title}
           description={description}
         />
-        <Button
-          disabled={isLoading}
-          variant="destructive"
-          size="sm"
-          onClick={() => setOpen(true)}
-        >
-          <Trash className="w-4 h-4" />
-        </Button>
+        {data && (
+          <Button
+            disabled={isLoading}
+            variant="destructive"
+            size="sm"
+            onClick={() => setOpen(true)}
+          >
+            <Trash className="w-4 h-4" />
+          </Button>
+        )}
       </div>
       <Separator />
       <CategoryForm
-        data={data}
+        data={data?.[0]}
         storeId={params.storeId as string}
         action={action}
         categoryId={params.categoryId as string}

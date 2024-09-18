@@ -5,20 +5,21 @@ import toast from "react-hot-toast";
 
 import { categorySchema } from "../../schemas/store";
 import {
-    useCreateCategoryMutation,
-    useUpdateCategoryMutation,
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
 } from "../../services/category";
 import { Button } from "../ui/button";
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { useNavigate } from "react-router-dom";
+import ImageUpload from "../feature/image-upload";
 
 interface CategoryFormProps {
   data: any;
@@ -35,11 +36,12 @@ const CategoryForm = ({
   categoryId,
   toastMessage,
 }: CategoryFormProps) => {
+  console.log(data);
   const form = useForm<z.infer<typeof categorySchema>>({
     resolver: zodResolver(categorySchema),
-    defaultValues: data || {
-      label: "",
-      imageUrl: "",
+    defaultValues: {
+      name: data ? data?.name : "",
+      imageUrl: data ? data?.image : "",
     },
   });
 
@@ -59,7 +61,7 @@ const CategoryForm = ({
       if (data) {
         await updateCategory({ category: values, storeId, categoryId });
       } else {
-        await createCategory({ category: values, storeId});
+        await createCategory({ category: values, storeId });
       }
       navigate(`/${storeId}/category`);
       toast.success(toastMessage);
@@ -70,7 +72,7 @@ const CategoryForm = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(Submit)} className="space-y-8 w-full">
-        <div className="md:grid md:grid-cols-3 gap-8">
+        <div className="md:grid md:grid-row-2 gap-8">
           <FormField
             control={form.control}
             name="name"
@@ -79,9 +81,26 @@ const CategoryForm = ({
                 <FormLabel>Name</FormLabel>
                 <FormControl>
                   <Input
+                    className="max-w-md"
                     disabled={isLoading}
                     placeholder="Category label"
                     {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="imageUrl"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Image</FormLabel>
+                <FormControl>
+                  <ImageUpload
+                    value={field.value}
+                    onValueChange={field.onChange}
                   />
                 </FormControl>
                 <FormMessage />
