@@ -1,8 +1,8 @@
 import * as z from "zod";
 
 export enum BannerType {
-  MainBanner = "Main Banner",
-  SmallBanner = "Small Banner"
+  MAIN = "MAIN",
+  SMALL = "SMALL",
 }
 
 export const storeSchema = z.object({
@@ -11,12 +11,12 @@ export const storeSchema = z.object({
 
 export const bannerSchema = z.object({
   type: z.nativeEnum(BannerType),
-  imageUrl: z.string().min(1),
+  productId: z.string().min(1),
 });
 
 export const categorySchema = z.object({
   name: z.string().min(1),
-  imageUrl: z.string().min(1)
+  imageUrl: z.string().min(1),
 });
 
 export const productSchema = z.object({
@@ -33,4 +33,4 @@ export const productSchema = z.object({
   isFamous: z.boolean(),
   isFeatured: z.boolean(),
   isSpecial: z.boolean(),
-})
+});

@@ -1,3 +1,5 @@
+import { BannerType } from "../schemas/store";
+
 export type StoreType = {
     id: string;
     name: string;
@@ -30,4 +32,13 @@ export type ProductType = {
     IsSpecial: boolean
     createdAt: Date;
     updatedAt: Date;
+}
+
+export type BannerTypes = {
+    id: string
+    type: BannerType,
+    product: ProductType,
+    productId: string
+    createdAt: Date
+    updateAt: Date
 }
