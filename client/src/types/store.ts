@@ -50,3 +50,19 @@ export type BillboardTypes = {
     createdAt: Date
     updateAt: Date
 }
+
+export type SizeTypes = {
+    id: string
+    name: string
+    value: string
+    createdAt: Date
+    updateAt: Date
+}
+
+export type ColorTypes = {
+    id: string
+    name: string
+    value: string
+    createdAt: Date
+    updateAt: Date
+}

@@ -13,6 +13,10 @@ import CategoryIdPage from "./pages/category/categoryIdPage";
 import StoreIDPage from "./pages/store";
 import BillboardPage from "./pages/billboard";
 import BillboardIdPage from "./pages/billboard/billboardId";
+import SizePage from "./pages/sizes";
+import SizeIdPage from "./pages/sizes/sizeId";
+import ColorPage from "./pages/color";
+import ColorIdPage from "./pages/color/colorId";
 
 function App() {
   return (
@@ -43,6 +47,14 @@ function App() {
           {/* Product Pages */}
           <Route path="products" element={<ProductPage />} />
           <Route path="products/:productId" element={<ProductIdPage />} />
+  
+          {/* Size Pages */}
+          <Route path="sizes" element={<SizePage />} />
+          <Route path="sizes/:sizeId" element={<SizeIdPage />} />
+  
+          {/* Color Pages */}
+          <Route path="colors" element={<ColorPage />} />
+          <Route path="colors/:colorId" element={<ColorIdPage />} />
         </Route>
       </Route>
     </Routes>
