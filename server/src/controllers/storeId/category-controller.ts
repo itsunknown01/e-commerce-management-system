@@ -10,7 +10,7 @@ export const createSingleCategory = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid Fields" });
     }
 
-    const { name,imageUrl } = validation.data;
+    const { name,imageUrl,billboardId } = validation.data;
 
     const { storeId } = req.params;
     if (!storeId) return res.sendStatus(400);
@@ -35,11 +35,21 @@ export const createSingleCategory = async (req: Request, res: Response) => {
 
     if (!storeByUserId) return res.sendStatus(405);
 
+    const billboardById = await db.billboard.findUnique({
+      where: {
+        id: billboardId,
+        storeId: storeByUserId.id
+      }
+    })
+
+    if (!billboardById) return res.sendStatus(405);
+
     const newCategory = await db.category.create({
       data: {
         name,
         image: imageUrl,
         storeId: storeByUserId.id,
+        billboardId: billboardById.id
       },
     });
 
@@ -94,7 +104,7 @@ export const updateSingleCategory = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid Fields" });
     }
 
-    const { name } = validation.data;
+    const { name,imageUrl,billboardId } = validation.data;
 
     const { storeId, categoryId } = req.params;
 
@@ -121,6 +131,15 @@ export const updateSingleCategory = async (req: Request, res: Response) => {
 
     if (!storeByUserId) return res.sendStatus(405);
 
+    const billboardById = await db.billboard.findUnique({
+      where: {
+        id: billboardId,
+        storeId: storeByUserId.id
+      }
+    })
+
+    if (!billboardById) return res.sendStatus(405);
+
     const updatedCategory = await db.category.update({
       where: {
         id: categoryId,
@@ -128,6 +147,8 @@ export const updateSingleCategory = async (req: Request, res: Response) => {
       },
       data: {
         name,
+        image: imageUrl,
+        billboardId: billboardById.id
       },
     });
 
