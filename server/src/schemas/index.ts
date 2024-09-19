@@ -27,9 +27,15 @@ export const bannerSchema = z.object({
   productId: z.string().min(1),
 });
 
+export const billboardSchema = z.object({
+  label: z.string().min(1),
+  imageUrl: z.string().min(1),
+});
+
 export const categorySchema = z.object({
   name: z.string().min(1),
   imageUrl: z.string().min(1),
+  billboardId: z.string().min(1)
 });
 
 export const productSchema = z.object({
@@ -37,6 +43,8 @@ export const productSchema = z.object({
   brand: z.string().min(1),
   description: z.string().min(1),
   categoryId: z.string().min(1),
+  colorId: z.string().min(1),
+  sizesId: z.string().optional(),
   discountPercentage: z.string().min(1),
   images: z.array(z.string()),
   price: z.string().min(1),

@@ -16,7 +16,7 @@ dotenv.config();
 
 const app: Application = express();
 
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 const port = process.env.PORT || 8000;
 
@@ -24,7 +24,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: ["http://localhost:5173", "http://localhost:5174"],
-    methods: ["GET", "POST", "DELETE", "PATCH"],
+    methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
     credentials: true,
   })
 );
