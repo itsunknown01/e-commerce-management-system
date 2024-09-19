@@ -14,7 +14,10 @@ export default function BillboardPage() {
   const params = useParams();
 
   const { data: billboards = [], isLoading } = useFetchAllBillboardsQuery(
-    params.storeId as string
+    params.storeId as string, {
+      refetchOnMountOrArgChange: true,
+      refetchOnFocus: true
+    }
   );
 
   const formattedData: BillboardColumn[] = useMemo(
@@ -40,7 +43,7 @@ export default function BillboardPage() {
         <DataTable
           data={formattedData}
           columns={columns}
-          searchkey="productName"
+          searchkey="label"
           loading={isLoading}
         />
         <Heading

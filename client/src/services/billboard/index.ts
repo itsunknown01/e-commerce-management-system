@@ -7,6 +7,7 @@ const billboardAPISlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     fetchAllBillboards: builder.query<BillboardTypes[], string>({
       query: (storeId) => `${storeId}/billboards`,
+      providesTags: ["Billboards"]
     }),
     createBillboard: builder.mutation<
       { newBillboard: BillboardTypes },
@@ -17,6 +18,7 @@ const billboardAPISlice = apiSlice.injectEndpoints({
         method: "POST",
         body: values,
       }),
+      invalidatesTags: ["Billboards"]
     }),
     updateBillboard: builder.mutation<
       { updatedBillboard: BillboardTypes },
@@ -31,6 +33,7 @@ const billboardAPISlice = apiSlice.injectEndpoints({
         method: "PUT",
         body: values,
       }),
+      invalidatesTags: ["Billboards"]
     }),
     deleteBillboard: builder.mutation<
       any,
@@ -43,6 +46,7 @@ const billboardAPISlice = apiSlice.injectEndpoints({
         url: `${storeId}/delete-billboard/${billboardId}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["Billboards"]
     }),
   }),
 });

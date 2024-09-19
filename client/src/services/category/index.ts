@@ -7,6 +7,7 @@ const categoryAPISlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     fetchCategories: builder.query<CategoryType[], string>({
       query: (storeId) => `${storeId}/category`,
+      providesTags: ["Category"]
     }),
     createCategory: builder.mutation<
       { newCategory: CategoryType },
@@ -17,6 +18,7 @@ const categoryAPISlice = apiSlice.injectEndpoints({
         method: "POST",
         body: category,
       }),
+      invalidatesTags: ["Category"]
     }),
     updateCategory: builder.mutation<
       { updatedCategory: CategoryType },
@@ -31,6 +33,7 @@ const categoryAPISlice = apiSlice.injectEndpoints({
         method: "PUT",
         body: category,
       }),
+      invalidatesTags: ["Category"]
     }),
     deleteCategory: builder.mutation<
       any,
@@ -40,6 +43,7 @@ const categoryAPISlice = apiSlice.injectEndpoints({
         url: `${storeId}/delete-category/${categoryId}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["Category"]
     }),
   }),
 });

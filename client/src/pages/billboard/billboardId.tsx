@@ -23,7 +23,7 @@ export default function BillboardIdPage() {
   );
   const data = useMemo(
     () =>
-      billboards?.filter((billboard) => billboard.id === params.billboardId),
+      billboards?.find((billboard) => billboard.id === params.billboardId),
     [params.billboardId, billboards]
   );
 

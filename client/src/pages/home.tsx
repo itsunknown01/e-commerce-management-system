@@ -9,60 +9,39 @@ import { StoreType } from "../types/store";
 const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const [loading, setLoading] = useState(true);
+  const [checkedStores, setCheckedStores] = useState(false);
 
   const { userInfo } = useSelector((state: RootState) => state.reducer.auth);
-  const { isOpen } = useSelector((state: RootState) => state.reducer.modal);
-  const isAuthenticated: boolean = JSON.parse(
-    localStorage.getItem("authenticated") as string
-  );
-  const { data: stores, isLoading,isSuccess } = useFetchStoresQuery("allStores");
-
-  const userId = userInfo?.id;
-  const store = stores?.find((store: StoreType) => store.userId === userId);
+  const {
+    data: stores,
+    isLoading,
+    isSuccess,
+  } = useFetchStoresQuery("allStores", {
+    skip: !userInfo, // Skip the query if there's no userInfo
+  });
 
   useEffect(() => {
-    const checkStore = () => {
-      if (isLoading) return;
-
-      if (!userId && !isAuthenticated) {
-        navigate("/login");
-        return;
-      }
-
-      if (store) {
-        navigate(`/${store?.id}`);
-        return;
-      } else if (!isOpen && isSuccess) {
-        dispatch(onOpen());
+    if (isSuccess && stores && userInfo && !checkedStores) {
+      const userStores = stores.filter((store: StoreType) => store.userId === userInfo.id);
+      
+      if (userStores.length > 0) {
+        navigate(`/${userStores[0].id}`);
       } else {
-        setLoading(false);
+        dispatch(onOpen());
       }
-    };
+      setCheckedStores(true);
+    }
+  }, [isSuccess, stores, userInfo, navigate, dispatch, checkedStores]);
 
-    checkStore();
-  }, [
-    stores,
-    isLoading,
-    navigate,
-    dispatch,
-    store,
-    isOpen,
-    userId,
-    isAuthenticated,
-    isSuccess
-  ]);
-
-  let content;
-
-  if (loading || isLoading) {
-    content = <div>Loading...</div>;
-  } else {
-    content = null;
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
-  return content;
+  if (!userInfo || checkedStores) {
+    return null;
+  }
+
+  return <div>Checking stores...</div>;
 };
 
 export default Home;

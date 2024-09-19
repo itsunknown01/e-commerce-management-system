@@ -40,7 +40,7 @@ const BillboardForm = ({
     resolver: zodResolver(billboardSchema),
     defaultValues: {
       label: data ? data.label : "",
-      imageUrl: data ? data.type : "",
+      imageUrl: data ? data.imageUrl : "",
     },
   });
 
@@ -63,7 +63,7 @@ const BillboardForm = ({
       toast.error("Something went wrong.");
     }
   };
-
+  
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(Submit)} className="space-y-8 w-full">
@@ -103,7 +103,7 @@ const BillboardForm = ({
           />
         </div>
         <Button
-          // disabled={loading}
+          disabled={createLoading || updateLoading}
           className="ml-auto"
           type="submit"
         >

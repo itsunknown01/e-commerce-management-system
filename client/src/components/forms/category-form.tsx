@@ -20,6 +20,14 @@ import {
 import { Input } from "../ui/input";
 import { useNavigate } from "react-router-dom";
 import ImageUpload from "../feature/image-upload";
+import { BillboardTypes } from "../../types/store";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 interface CategoryFormProps {
   data: any;
@@ -27,6 +35,7 @@ interface CategoryFormProps {
   action: string;
   categoryId: string;
   toastMessage: string;
+  billboards: BillboardTypes[] | undefined;
 }
 
 const CategoryForm = ({
@@ -35,13 +44,14 @@ const CategoryForm = ({
   action,
   categoryId,
   toastMessage,
+  billboards,
 }: CategoryFormProps) => {
-  console.log(data);
   const form = useForm<z.infer<typeof categorySchema>>({
     resolver: zodResolver(categorySchema),
     defaultValues: {
       name: data ? data?.name : "",
       imageUrl: data ? data?.image : "",
+      billboardId: data ? data?.billboardId : "",
     },
   });
 
@@ -56,7 +66,6 @@ const CategoryForm = ({
   const isLoading = data ? updateLoading : createLoading;
 
   const Submit = async (values: z.infer<typeof categorySchema>) => {
-    console.log(values);
     try {
       if (data) {
         await updateCategory({ category: values, storeId, categoryId });
@@ -103,6 +112,35 @@ const CategoryForm = ({
                     onValueChange={field.onChange}
                   />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="billboardId"
+            render={({ field }) => (
+              <FormItem className="max-w-md">
+                <FormLabel>Billboards</FormLabel>
+                <Select
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  disabled={isLoading}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Billboard" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {billboards?.map((billboard) => (
+                        <SelectItem key={billboard.id} value={billboard.id}>
+                          {billboard.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </FormControl>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}

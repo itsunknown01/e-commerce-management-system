@@ -38,6 +38,6 @@ const baseQueryWithAuth: typeof baseQuery = async (args,api,options) => {
 export const apiSlice = createApi({
     reducerPath: "api",
     baseQuery: baseQueryWithAuth,
-    tagTypes: ["APIS"], 
+    tagTypes: ["APIS","Billboards","Category"], 
     endpoints: builder => ({})
 })

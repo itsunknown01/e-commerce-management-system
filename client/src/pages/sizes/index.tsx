@@ -41,7 +41,7 @@ export default function SizePage () {
         <DataTable
           data={formattedData}
           columns={columns}
-          searchkey="productName"
+          searchkey="name"
           loading={isLoading}
         />
         <Heading

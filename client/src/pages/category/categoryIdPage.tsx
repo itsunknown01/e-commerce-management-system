@@ -13,6 +13,7 @@ import {
   useDeleteCategoryMutation,
   useFetchCategoriesQuery,
 } from "../../services/category";
+import { useFetchAllBillboardsQuery } from "../../services/billboard";
 
 const CategoryIdPage = () => {
   const [open, setOpen] = useState(false);
@@ -20,6 +21,9 @@ const CategoryIdPage = () => {
   const navigate = useNavigate();
 
   const { data: categories } = useFetchCategoriesQuery(
+    params.storeId as string
+  );
+  const { data: billboards } = useFetchAllBillboardsQuery(
     params.storeId as string
   );
   const data = useMemo(
@@ -80,6 +84,7 @@ const CategoryIdPage = () => {
         action={action}
         categoryId={params.categoryId as string}
         toastMessage={toastMessage}
+        billboards={billboards}
       />
     </Page>
   );
