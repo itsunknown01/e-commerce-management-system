@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { RootState } from "../../redux/store";
 import { useRefreshTokenMutation } from "../../services/auth";
 
 export default function ProtectedWrapper() {
+  const location = useLocation();
   const { token } = useSelector((state: RootState) => state.reducer.auth);
 
-  const [refresh, { isLoading }] =
-    useRefreshTokenMutation();
+  const [refresh, { isLoading }] = useRefreshTokenMutation();
   const isAuthenticated = JSON.parse(
     localStorage.getItem("authenticated") as string
   );
@@ -23,7 +23,15 @@ export default function ProtectedWrapper() {
     };
 
     if (!token && isAuthenticated) authenticate();
-  }, []);
+  }, [token, isAuthenticated, refresh]);
 
-  return isLoading ? <p>Loading...</p> : <Outlet />;
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (!isAuthenticated || !token) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  return <Outlet />;
 }

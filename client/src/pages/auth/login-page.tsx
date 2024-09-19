@@ -17,7 +17,7 @@ const LoginPage = () => {
     if (isAuthenticated && token) {
       navigate(from, { replace: true });
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, token, navigate, from]);
 
   return (
     <div className="h-screen flex items-center justify-center bg-[#F5F6FA] dark:bg-[#1B2431]">
