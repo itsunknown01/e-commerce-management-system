@@ -14,6 +14,11 @@ export const bannerSchema = z.object({
   productId: z.string().min(1),
 });
 
+export const billboardSchema = z.object({
+  label: z.string().min(1),
+  imageUrl: z.string().min(1),
+});
+
 export const categorySchema = z.object({
   name: z.string().min(1),
   imageUrl: z.string().min(1),

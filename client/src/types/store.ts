@@ -42,3 +42,11 @@ export type BannerTypes = {
     createdAt: Date
     updateAt: Date
 }
+
+export type BillboardTypes = {
+    id: string
+    label: string
+    imageUrl: string
+    createdAt: Date
+    updateAt: Date
+}

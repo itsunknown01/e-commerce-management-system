@@ -5,12 +5,14 @@ import RegisterPage from "./pages/auth/register-page";
 import Home from "./pages/home";
 import ProtectedWrapper from "./components/wrappers/protected-wrapper";
 import BannerPage from "./pages/banner";
-import ProductPage from "./pages/products"
-import ProductIdPage from "./pages/products/productId"
+import ProductPage from "./pages/products";
+import ProductIdPage from "./pages/products/productId";
 import CategoryPage from "./pages/category";
 import BannerIDPage from "./pages/banner/bannerIdPage";
 import CategoryIdPage from "./pages/category/categoryIdPage";
 import StoreIDPage from "./pages/store";
+import BillboardPage from "./pages/billboard";
+import BillboardIdPage from "./pages/billboard/billboardId";
 
 function App() {
   return (
@@ -29,6 +31,10 @@ function App() {
           {/* Banner Pages */}
           <Route path="banner" element={<BannerPage />} />
           <Route path="banner/:bannerId" element={<BannerIDPage />} />
+
+          {/* Billboard Pages */}
+          <Route path="billboard" element={<BillboardPage />} />
+          <Route path="billboard/:billboardId" element={<BillboardIdPage />} />
 
           {/* Category Pages */}
           <Route path="category" element={<CategoryPage />} />
