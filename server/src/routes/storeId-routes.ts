@@ -23,6 +23,8 @@ import {
   fetchAllBillboards,
   updateBillboards,
 } from "../controllers/storeId/billboard-controller";
+import { createSizes, deleteSizes, fetchAllSizes, updateSizes } from "../controllers/storeId/size-controller";
+import { createColors, deleteColors, fetchAllColors, updateColors } from "../controllers/storeId/color-controller";
 
 const router = Router({ mergeParams: true });
 
@@ -49,5 +51,17 @@ router.get("/billboards", fetchAllBillboards);
 router.post("/create-billboard", createBillboards);
 router.put("/update-billboard/:billboardId", updateBillboards);
 router.delete("/delete-billboard/:billboardId", deleteBillboards);
+
+// size routes
+router.get("/sizes", fetchAllSizes);
+router.post("/create-size", createSizes);
+router.put("/update-size/:sizeId", updateSizes);
+router.delete("/delete-size/:sizeId", deleteSizes);
+
+// color routes
+router.get("/colors", fetchAllColors);
+router.post("/create-color", createColors);
+router.put("/update-color/:colorId", updateColors);
+router.delete("/delete-color/:colorId", deleteColors);
 
 export default router;
