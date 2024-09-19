@@ -45,11 +45,11 @@ const ProductForm = ({ action, storeId, data,toastMessage }: ProductFormProps) =
       brand: data ? data.brand : "",
       description: data ? data.description : "",
       categoryId: data ? data.categoryId : "",
-      discountPercentage: data ? data.discountPercentage : "0",
+      discountPercentage: data ? `${data.discountPercentage}` : "0",
       images: data ? data.images : [],
-      price: data ? data.price : "0",
-      rating: data ? data.rating : "0",
-      quantity: data ? data.quantity : "0",
+      price: data ? `${data.price}` : "0",
+      rating: data ? `${data.rating}` : "0",
+      quantity: data ? `${data.quantity}` : "0",
       thumbnail: data ? data.thumbnail : "",
       isFamous: data ? data.IsFamous : false,
       isFeatured: data ? data.IsFeatured : false,
@@ -159,7 +159,6 @@ const ProductForm = ({ action, storeId, data,toastMessage }: ProductFormProps) =
                 <FormLabel>Product Discount</FormLabel>
                 <FormControl>
                   <Input
-                    type="number"
                     placeholder="Enter Product Discount"
                     {...field}
                   />
@@ -198,7 +197,6 @@ const ProductForm = ({ action, storeId, data,toastMessage }: ProductFormProps) =
                 <FormLabel>Product Price</FormLabel>
                 <FormControl>
                   <Input
-                    type="number"
                     placeholder="Enter Product Price"
                     {...field}
                   />
@@ -215,7 +213,6 @@ const ProductForm = ({ action, storeId, data,toastMessage }: ProductFormProps) =
                 <FormLabel>Product Rating</FormLabel>
                 <FormControl>
                   <Input
-                    type="number"
                     placeholder="Enter Product Rating"
                     {...field}
                   />
@@ -232,7 +229,6 @@ const ProductForm = ({ action, storeId, data,toastMessage }: ProductFormProps) =
                 <FormLabel>Product Quantity</FormLabel>
                 <FormControl>
                   <Input
-                    type="number"
                     placeholder="Enter Product Quantity"
                     {...field}
                   />

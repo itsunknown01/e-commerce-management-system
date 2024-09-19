@@ -1,18 +1,25 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { SidebarLinks } from "../../lib/utils";
 import { Button } from "../ui/button";
 
 export default function Sidebar() {
-  const [active, setActive] = useState("/");
+  const [pathName, setPathName] = useState("/");
   const location = useLocation();
   const params = useParams();
 
   const pathname = location.pathname;
 
   useEffect(() => {
-    setActive(pathname);
+    setPathName(pathname);
   }, [pathname]);
+
+  const isLinkActive = useCallback((linkHref: string) => {
+    if (linkHref === "/") {
+      return pathName === `/${params.storeId}`;
+    }
+    return pathName.startsWith(`/${params.storeId}${linkHref}`);
+  }, [pathName, params.storeId]);
 
   return (
     <div className="h-screen w-60 shadow-xl py-6 text-center flex flex-col gap-y-10 px-3">
@@ -28,7 +35,7 @@ export default function Sidebar() {
         {SidebarLinks.map((link) => (
           <Button
             className={`w-full hover:bg-[#4880FF] hover:opacity-75 hover:text-zinc-50 hover:no-underline ${
-              active === `/${params.storeId}${link.href}` && "bg-[#4880FF] text-zinc-50"
+              isLinkActive(link.href) && "bg-[#4880FF] text-zinc-50"
             }`}
             variant="link"
             key={link.title}

@@ -9,7 +9,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import BannerForm from "../../components/forms/banner-form";
 import { useFetchProductsQuery } from "../../services/product";
 import toast from "react-hot-toast";
-import { useDeleteBannerMutation, useFetchAllBannersQuery } from "../../services/banner";
+import {
+  useDeleteBannerMutation,
+  useFetchAllBannersQuery,
+} from "../../services/banner";
 
 export default function BannerIDPage() {
   const [open, setOpen] = useState(false);
@@ -17,12 +20,15 @@ export default function BannerIDPage() {
   const params = useParams();
   const navigate = useNavigate();
 
-  const {data: banners} = useFetchAllBannersQuery(params.storeId as string)
-  const data = useMemo(() => banners?.filter(banner => banner.id === params.bannerId), [banners,params.bannerId])
-  
+  const { data: banners } = useFetchAllBannersQuery(params.storeId as string);
+  const data = useMemo(
+    () => banners?.filter((banner) => banner.id === params.bannerId),
+    [banners, params.bannerId]
+  );
+
   const title = data ? "Edit banner" : "Create banner";
   const description = data ? "Edit a banner" : "Add a new banner";
-  const toastMessage = data ? "Banner updated" : "Banner created"
+  const toastMessage = data ? "Banner updated" : "Banner created";
   const action = data ? "Save changes" : "Create";
 
   const { data: products } = useFetchProductsQuery(params.storeId as string);
@@ -35,12 +41,12 @@ export default function BannerIDPage() {
         storeId: params.storeId as string,
         bannerId: params.bannerId as string,
       });
-      toast.success("Banner deleted")
-      navigate(`/${params.storeId}/banner`)
+      toast.success("Banner deleted");
+      navigate(`/${params.storeId}/banner`);
     } catch (error) {
       toast.error("Something went wrong");
     } finally {
-      setOpen(false)
+      setOpen(false);
     }
   };
 

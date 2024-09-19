@@ -48,7 +48,7 @@ const BannerForm = ({
     resolver: zodResolver(bannerSchema),
     defaultValues: {
       productId: data ? data.productId : "",
-      type: data ? data.type : BannerType.SmallBanner,
+      type: data ? data.type : BannerType.SMALL,
     },
   });
 
