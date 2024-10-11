@@ -4,7 +4,7 @@ import { logout, setCredentials } from "../../redux/slices/auth";
 
 const baseQuery = fetchBaseQuery({
   baseUrl:
-    `${import.meta.env.VITE_APP_API_URL}/api` || "http://localhost:8000/api",
+    "https://e-commerce-management-system.onrender.com/api" || "http://localhost:8000/api",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).reducer.auth.token;
