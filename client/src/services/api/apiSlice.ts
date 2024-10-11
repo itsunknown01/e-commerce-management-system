@@ -3,8 +3,7 @@ import { RootState } from "../../redux/store";
 import { logout, setCredentials } from "../../redux/slices/auth";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl:
-    "https://e-commerce-management-system.onrender.com/api" || "http://localhost:8000/api",
+  baseUrl: "http://localhost:8000/api",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).reducer.auth.token;
