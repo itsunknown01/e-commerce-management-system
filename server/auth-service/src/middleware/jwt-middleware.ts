@@ -1,16 +1,18 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
-import { config } from "dotenv";
-import { db } from "../services/db";
+import { IUser, IUserRole } from "../types";
+import { IRequest } from "../types/custom";
+import dotenv from "dotenv";
+import User from "../models";
 
-config();
+dotenv.config();
 
 interface DecodedToken {
   email: string;
 }
 
 export default function JWTMiddleware(
-  req: Request,
+  req: IRequest,
   res: Response,
   next: NextFunction
 ) {
@@ -29,27 +31,17 @@ export default function JWTMiddleware(
 
         const decodedToken = decoded as DecodedToken;
 
-        const existingUser = await db.user.findUnique({
-          where: { email: decodedToken.email },
-        });
+        const existingUser: IUser | null = await User.findOne({ email: decodedToken.email });
 
         if (!existingUser) return res.sendStatus(404);
 
-        
         req.user = {
-          id: existingUser?.id,
+          _id: existingUser?._id,
           name: existingUser?.name,
           email: existingUser?.email,
           role: existingUser?.role,
           image: existingUser?.image,
         };
-        
-        // if (req.params.storeId !== undefined) {
-        //   const { storeId } = req.params;
-        //   console.log(storeId, "params");
-        //   req.params.storeId = storeId;
-        // }
-
         next();
       }
     );
